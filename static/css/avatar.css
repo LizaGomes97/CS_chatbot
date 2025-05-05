@@ -1,0 +1,259 @@
+/* CSS específico para o avatar e elementos relacionados */
+.secao-avatar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 450px;
+    margin: 1rem 0 2rem;
+    perspective: 1200px;
+    
+
+    
+  }
+  
+  #container-avatar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    z-index: 1;
+    
+     
+  }
+  
+  #container-avatar canvas {
+    position: absolute;
+    top: 500px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0 !important; /* Remover o border-radius que pode estar criando o efeito de "tela" */
+    box-shadow: none !important; /* Remover qualquer sombra */
+}
+  
+  /* Plataforma que aparece abaixo do avatar */
+  .avatar-platform {
+    position: absolute;
+    bottom: 0;
+    width: 80%;
+    height: 20px;
+    background: radial-gradient(ellipse at center, rgba(255, 153, 0, 0.4) 0%, rgba(255, 153, 0, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  /* Balão de fala estilizado */
+  .balao-fala {
+    position: absolute;
+    top: 460px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 280px;
+    max-width: 90%;
+    background-color: rgba(30, 42, 71, 0.95);
+    border: 2px solid var(--accent);
+    border-radius: var(--border-radius-lg);
+    padding: 15px 25px;
+    color: var(--text-light);
+    font-size: 1rem;
+    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+    opacity: 0;
+    animation: aparecerBalao 1s forwards;
+    animation-delay: 0.5s;
+    text-align: center;
+  }
+  
+  .balao-fala:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: var(--accent);
+    margin-left: -10px;
+    z-index: 2;
+  }
+  
+  .balao-fala:before {
+    content: "";
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: rgba(30, 42, 71, 0.95);
+    margin-left: -8px;
+    z-index: 3;
+  }
+  
+  /* Animação para pontos de pensamento */
+  .pontos-pensamento {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .pontos-pensamento span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    animation: piscar 1.4s infinite;
+    animation-fill-mode: both;
+  }
+  
+  .pontos-pensamento span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .pontos-pensamento span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  /* Avatar hover effect */
+  #container-avatar:hover {
+    transform: scale(1.01);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Área de entrada de mensagens */
+  .area-entrada {
+    top:500px;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+  
+  #formulario-usuario {
+    position: relative;
+    width: 100%;
+  }
+  
+  #entrada-usuario {
+    width: 100%;
+    padding: 18px 25px;
+    font-size: 1rem;
+    border: 2px solid var(--accent);
+    border-radius: var(--border-radius-xl);
+    color: var(--text-light);
+    background-color: rgba(30, 42, 71, 0.7);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    outline: none;
+    text-align: center;
+  }
+  
+  #entrada-usuario::placeholder {
+    color: rgba(230, 230, 230, 0.6);
+    font-weight: 300;
+  }
+  
+  #entrada-usuario:focus {
+    border-color: var(--accent-light);
+    box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
+    background-color: rgba(30, 42, 71, 0.8);
+  }
+  
+  /* Botão de envio (opcional) */
+  .btn-enviar {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--accent);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-enviar:hover {
+    background-color: var(--accent-light);
+  }
+  
+  .btn-enviar svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-light);
+  }
+  
+  /* Efeito de brilho ao redor do avatar */
+  .avatar-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse at center, rgba(255, 153, 0, 0.15) 0%, rgba(255, 153, 0, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(20px);
+  }
+  
+  /* Versão escura para compatibilidade com modo escuro */
+  @media (prefers-color-scheme: dark) {
+    #entrada-usuario {
+      background-color: rgba(18, 26, 39, 0.8);
+    }
+    
+    .balao-fala {
+      background-color: rgba(18, 26, 39, 0.95);
+    }
+    
+    .balao-fala:before {
+      border-top-color: rgba(18, 26, 39, 0.95);
+    }
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .secao-avatar {
+      height: 350px;
+    }
+    
+    .balao-fala {
+      min-width: 220px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+    }
+    
+    #entrada-usuario {
+      padding: 15px 20px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .secao-avatar {
+      height: 300px;
+    }
+    
+    .balao-fala {
+      min-width: 180px;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      top: -50px;
+    }
+    
+    #entrada-usuario {
+      padding: 12px 15px;
+      font-size: 0.9rem;
+    }
+  }

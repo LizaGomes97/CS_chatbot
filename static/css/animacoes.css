@@ -1,0 +1,266 @@
+/* Arquivo de animações para o chatbot CS */
+
+/* Animação de fade in para o balão de fala */
+@keyframes aparecerBalao {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+  }
+  
+  /* Animação dos pontos de pensamento */
+  @keyframes piscar {
+    0% {
+      opacity: 0.2;
+      transform: scale(0.8);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 0.2;
+      transform: scale(0.8);
+    }
+  }
+  
+  /* Animação de respiração suave */
+  @keyframes respirar {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Animação para a arma girando */
+  @keyframes girarArma {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Animação para a vida quando está baixa */
+  @keyframes pulsarVida {
+    0% {
+      box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+      text-shadow: 0 0 8px rgba(244, 67, 54, 0.8);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+      text-shadow: 0 0 15px rgba(244, 67, 54, 1);
+    }
+    100% {
+      box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+      text-shadow: 0 0 8px rgba(244, 67, 54, 0.8);
+    }
+  }
+  
+  /* Animação para o tempo quando está acabando */
+  @keyframes piscarTempo {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Animação para recebimento de dano */
+  @keyframes receberDano {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+    10% {
+      box-shadow: 0 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+  }
+  
+  /* Animação para tiro */
+  @keyframes tiro {
+    0% {
+      filter: brightness(1);
+    }
+    5% {
+      filter: brightness(1.5);
+    }
+    100% {
+      filter: brightness(1);
+    }
+  }
+  
+  /* Animação para recarga */
+  @keyframes recarga {
+    0% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(5px);
+    }
+    75% {
+      transform: translateY(-2px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Animação para hover em elementos interativos */
+  @keyframes hoverItem {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Animação para entrada de elementos na tela */
+  @keyframes entradaSuave {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Animação para destaque de elementos importantes */
+  @keyframes destacar {
+    0% {
+      outline: 0px solid rgba(255, 153, 0, 0);
+    }
+    50% {
+      outline: 3px solid rgba(255, 153, 0, 0.5);
+    }
+    100% {
+      outline: 0px solid rgba(255, 153, 0, 0);
+    }
+  }
+  
+  /* Animação de rotação */
+  @keyframes rotacionar {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Animação de flutuação */
+  @keyframes flutuar {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  /* Animação para brilho da plataforma sob o avatar */
+  @keyframes brilhoPlataforma {
+    0% {
+      opacity: 0.6;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 0.6;
+      transform: scale(0.95);
+    }
+  }
+  
+  /* Classes de utilidade para aplicar animações */
+  .piscar-animacao {
+    animation: piscar 1.4s infinite;
+  }
+  
+  .respirar-animacao {
+    animation: respirar 4s infinite ease-in-out;
+  }
+  
+  .girar-animacao {
+    animation: girarArma 10s infinite linear;
+  }
+  
+  .pulsar-vida-animacao {
+    animation: pulsarVida 1.5s infinite;
+  }
+  
+  .piscar-tempo-animacao {
+    animation: piscarTempo 1s infinite;
+  }
+  
+  .entrada-suave-animacao {
+    animation: entradaSuave 0.8s forwards;
+  }
+  
+  .destacar-animacao {
+    animation: destacar 2s infinite;
+  }
+  
+  .flutuar-animacao {
+    animation: flutuar 3s infinite ease-in-out;
+  }
+  
+  .brilho-plataforma-animacao {
+    animation: brilhoPlataforma 4s infinite ease-in-out;
+  }
+  
+  /* Aplicando animações aos elementos específicos */
+  .pontos-pensamento span {
+    animation-name: piscar;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  
+  .pontos-pensamento span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .pontos-pensamento span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  .balao-fala {
+    animation: aparecerBalao 0.5s forwards;
+  }
+  
+  .avatar-platform {
+    animation: brilhoPlataforma 4s infinite ease-in-out;
+  }
+  
+  /* Efeito de ambiente pulsante para dar vida à cena */
+  .ambiente-pulsante {
+    animation: respirar 8s infinite ease-in-out;
+  }

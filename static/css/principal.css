@@ -1,0 +1,288 @@
+/* Importar fontes */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+/* Importar CSS base */
+@import 'base.css';
+
+/* Estilos gerais do corpo da aplicação */
+body {
+  background-color: var(--primary-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Container principal */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 120px 20px 40px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Efeito de brilho geral para dar profundidade */
+.brilho-ambiental {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(30, 42, 71, 0.4) 0%, rgba(18, 26, 39, 0.8) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Efeito de grade para o fundo */
+.grade-fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  z-index: -1;
+}
+
+/* Área principal - chatbot e avatar */
+.area-principal {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+/* Efeito "neon" para elementos destacados */
+.efeito-neon {
+  text-shadow: 0 0 5px rgba(255, 153, 0, 0.7), 0 0 10px rgba(255, 153, 0, 0.5);
+}
+
+.borda-neon {
+  box-shadow: 0 0 5px rgba(255, 153, 0, 0.7), 0 0 10px rgba(255, 153, 0, 0.5);
+}
+
+/* Cabeçalho da página */
+.cabecalho {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.logo {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  pointer-events: auto;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+/* Rodapé */
+.rodape {
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  z-index: 10;
+}
+
+.rodape a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.rodape a:hover {
+  text-decoration: underline;
+}
+
+/* Efeito de partículas no fundo (simulado com pseudoelementos) */
+.particulas::before,
+.particulas::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particulas::before {
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 1%);
+  background-position: 0 0;
+  background-size: 20px 20px;
+}
+
+.particulas::after {
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 1%);
+  background-position: 10px 10px;
+  background-size: 30px 30px;
+}
+
+/* Área do chatbot */
+.chatbot-container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Cena de fundo (para three.js) */
+#cena-fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Botão de ação flutuante */
+.acao-flutuante {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 24px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.acao-flutuante:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.5);
+}
+
+/* Área de carregamento com spinner */
+.area-carregamento {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 26, 39, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255, 153, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: rotacionar 1s infinite linear;
+  margin-bottom: 20px;
+}
+
+.mensagem-carregamento {
+  color: var(--text-light);
+  font-size: 1.2rem;
+}
+
+/* Preloader - vai ser escondido após o carregamento */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Cena 3D - ajuste para responsividade */
+@media (max-width: 768px) {
+  .container {
+    padding: 100px 15px 30px;
+  }
+  
+  .cabecalho {
+    padding: 15px;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .acao-flutuante {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    bottom: 20px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 90px 10px 20px;
+  }
+  
+  .cabecalho {
+    padding: 10px;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .acao-flutuante {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .rodape {
+    font-size: 0.75rem;
+  }
+}

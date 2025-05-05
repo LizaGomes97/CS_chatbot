@@ -1,0 +1,313 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}
+CS Chatbot - Assistente Virtual
+{% endblock %} 
+{% block content %}
+<!-- Gradiente no topo da tela -->
+<div class="hud-gradiente-topo"></div>
+
+<!-- Painel de instruções -->
+<div class="painel-instrucoes piscar-atencao" id="painel-instrucoes">
+  <button class="fechar-btn" id="fechar-instrucoes">&times;</button>
+  <h3>COMANDOS DO JOGO</h3>
+
+  <div class="linha-divisoria"></div>
+
+  <h4>Controles de Teclado:</h4>
+  <ul>
+    <li>
+      <span class="tecla">R</span>
+      <span class="descricao">Recarregar arma</span>
+    </li>
+    <li>
+      <span class="tecla">D</span>
+      <span class="descricao">Simular dano (teste)</span>
+    </li>
+    <li>
+      <span class="tecla">Click</span>
+      <span class="descricao">Atirar</span>
+    </li>
+  </ul>
+
+  <div class="linha-divisoria"></div>
+
+  <h4>Comandos de Chat:</h4>
+  <ul>
+    <li>
+      <span class="comando">atirar</span>
+      <span class="descricao">Disparar a arma</span>
+    </li>
+    <li>
+      <span class="comando">recarregar</span>
+      <span class="descricao">Recarregar munição</span>
+    </li>
+    <li>
+      <span class="comando">dano</span>
+      <span class="descricao">Simular dano</span>
+    </li>
+  </ul>
+
+  <div class="linha-divisoria"></div>
+
+  <p style="text-align: center; font-size: 12px; margin-top: 10px">
+    Pergunte sobre armas, mapas e táticas!
+  </p>
+</div>
+
+<!-- Botão para mostrar instruções novamente -->
+<div class="mostrar-instrucoes" id="mostrar-instrucoes">?</div>
+
+<!-- HUD principal -->
+<div class="hud-container">
+  <!-- Dinheiro à esquerda -->
+  <div class="dinheiro">
+    $<span id="valor-dinheiro">{{ hud_settings.initial_money }}</span>
+  </div>
+
+  <!-- Informações centrais -->
+  <div class="info-central">
+    <div class="vida" id="elemento-vida">
+      <span id="valor-vida">{{ hud_settings.initial_health }}</span>
+    </div>
+    <div class="tempo" id="valor-tempo">1:45</div>
+  </div>
+
+  <!-- Munição e arma à direita -->
+  <div class="arma-info">
+    <div class="municao">
+      <span class="municao-primaria" id="valor-municao-primaria"
+        >{{ hud_settings.initial_ammo_primary }}</span
+      >
+      <span class="municao-reserva" id="valor-municao-reserva"
+        >/ {{ hud_settings.initial_ammo_reserve }}</span
+      >
+    </div>
+    <!-- Ícone de arma -->
+    <div class="icone-arma">
+      <svg
+        width="32"
+        height="20"
+        viewBox="0 0 32 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M31 10H25L23 7H12L10 9H7L5 7H0"
+          stroke="white"
+          stroke-width="2"
+        />
+        <path d="M7 10V13" stroke="white" stroke-width="2" />
+        <path d="M10 9V15" stroke="white" stroke-width="2" />
+        <path d="M25 10V13" stroke="white" stroke-width="2" />
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Equipamentos -->
+<div class="equipamento">
+  <div class="item-equipamento">
+    <!-- Colete -->
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2L4 6V12C4 16.42 7.79 20.5 12 22C16.21 20.5 20 16.42 20 12V6L12 2Z"
+        stroke="white"
+        stroke-width="2"
+      />
+    </svg>
+  </div>
+  <div class="item-equipamento">
+    <!-- Kit de desarme -->
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="4"
+        y="6"
+        width="16"
+        height="12"
+        rx="2"
+        stroke="white"
+        stroke-width="2"
+      />
+      <path d="M8 10H16" stroke="white" stroke-width="2" />
+      <path d="M8 14H16" stroke="white" stroke-width="2" />
+    </svg>
+  </div>
+</div>
+
+<div class="container">
+  <div class="chatbot-container animate-fadeIn">
+    <div class="secao-avatar">
+      <!-- Efeito de brilho sob o avatar -->
+      <!-- <div class="avatar-platform brilho-plataforma-animacao"></div> -->
+
+      <!-- Container do avatar 3D -->
+      <div id="container-avatar" class="respirar-animacao"></div>
+
+      <!-- Cena de fundo -->
+      <canvas id="cena-fundo"></canvas>
+
+      <!-- Balão de fala -->
+      <div class="balao-fala" id="balao-fala"></div>
+
+      <!-- Efeito de brilho ao redor do avatar -->
+      <div class="avatar-glow"></div>
+    </div>
+
+    <div class="area-entrada entrada-suave-animacao">
+      <form id="formulario-usuario">
+        <input
+          type="text"
+          id="entrada-usuario"
+          placeholder="DIGITE SUA MENSAGEM"
+          autofocus
+        />
+        <button type="submit" class="btn-enviar">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22 2L11 13"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M22 2L15 22L11 13L2 9L22 2Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Dados para JavaScript -->
+<div
+  id="app-data"
+  data-avatar-url="{{ avatar.model_url }}"
+  data-chat-session-id="{{ chat_session_id }}"
+  data-hud-initial-money="{{ hud_settings.initial_money }}"
+  data-hud-initial-health="{{ hud_settings.initial_health }}"
+  data-hud-initial-ammo-primary="{{ hud_settings.initial_ammo_primary }}"
+  data-hud-initial-ammo-reserve="{{ hud_settings.initial_ammo_reserve }}"
+  data-hud-round-time="{{ hud_settings.round_time_seconds }}"
+  data-hud-show-instructions="{{ hud_settings.show_instructions_panel|lower }}"
+  style="display: none"
+></div>
+{% endblock %} 
+{% block base_js %}
+<!-- Importações Three.js -->
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+
+<!-- JavaScripts da aplicação -->
+<script>
+  // Configuração global para a aplicação
+  window.APP_CONFIG = {
+    emotions: JSON.parse("{{ emotions_json|escapejs }}"),
+    gameCommands: JSON.parse("{{ game_commands_json|escapejs }}"),
+    apiUrls: {
+      processMessage: "{% url 'chatbot:process_message' %}",
+      saveUsername: "{% url 'chatbot:save_username' %}",
+      endSession: "{% url 'chatbot:end_session' %}",
+      hudSettings: "{% url 'chatbot:hud_settings' %}",
+    },
+    csrfToken: "{{ csrf_token }}",
+  };
+</script>
+
+<script src="{% static 'js/principal.js' %}" type="module"></script>
+<script src="{% static 'js/hud.js' %}"></script>
+<script src="{% static 'js/avatar.js' %}" type="module"></script>
+<script src="{% static 'js/cenaFundo.js' %}" type="module"></script>
+<script src="{% static 'js/interacoes.js' %}" type="module"></script>
+
+<!-- Script para aplicar classes CSS dinâmicas -->
+<script>
+  // Aplicar classe de vida baseada no valor
+  function atualizarClassesVida() {
+    const vidaElemento = document.getElementById("elemento-vida");
+    const valorVida = parseInt(
+      document.getElementById("valor-vida").textContent
+    );
+
+    // Limpar classes
+    vidaElemento.classList.remove("vida-alta", "vida-media", "vida-baixa");
+
+    // Adicionar classe apropriada
+    if (valorVida > 70) {
+      vidaElemento.classList.add("vida-alta");
+    } else if (valorVida > 30) {
+      vidaElemento.classList.add("vida-media");
+    } else {
+      vidaElemento.classList.add("vida-baixa");
+    }
+  }
+
+  // Atualizar classe de tempo
+  function atualizarClassesTempo() {
+    const tempoElemento = document.getElementById("valor-tempo");
+    const tempoTexto = tempoElemento.textContent;
+    const partes = tempoTexto.split(":");
+
+    if (partes.length == 2) {
+      const minutos = parseInt(partes[0]);
+      const segundos = parseInt(partes[1]);
+      const totalSegundos = minutos * 60 + segundos;
+
+      tempoElemento.classList.toggle("tempo-baixo", totalSegundos <= 10);
+    }
+  }
+
+  // Executar quando o DOM estiver pronto
+  document.addEventListener("DOMContentLoaded", function () {
+    atualizarClassesVida();
+    atualizarClassesTempo();
+
+    // Observador para mudanças nos elementos
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (mutation.target.id === "valor-vida") {
+          atualizarClassesVida();
+        } else if (mutation.target.id === "valor-tempo") {
+          atualizarClassesTempo();
+        }
+      });
+    });
+
+    // Observar mudanças nos elementos
+    observer.observe(document.getElementById("valor-vida"), {
+      childList: true,
+    });
+    observer.observe(document.getElementById("valor-tempo"), {
+      childList: true,
+    });
+  });
+</script>
+{% endblock %}

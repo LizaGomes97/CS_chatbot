@@ -1,0 +1,323 @@
+/* Estilos personalizados para o Admin do Django */
+
+:root {
+    --primary-dark: #121a27;
+    --primary: #1e2a47;
+    --primary-light: #2e3d5a;
+    --primary-lighter: #3e4d6a;
+    --accent: #ff9900;
+    --accent-light: #ffb64d;
+    --accent-dark: #e68a00;
+    --text-light: #e6e6e6;
+    --text-dark: #1a1a2e;
+    --success: #4CAF50;
+    --danger: #f44336;
+    --warning: #ffc107;
+    --info: #03a9f4;
+  }
+  
+  /* Logo e cabeçalho */
+  #header {
+    background: var(--primary);
+    color: var(--text-light);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  #header a:link, #header a:visited {
+    color: var(--text-light);
+  }
+  
+  #header a:hover {
+    color: var(--accent);
+  }
+  
+  #branding h1 {
+    color: var(--accent);
+  }
+  
+  #branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: var(--accent);
+  }
+  
+  /* Menu */
+  #user-tools {
+    font-size: 13px;
+  }
+  
+  #user-tools a {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  #user-tools a:hover {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+  
+  /* Barra lateral */
+  .module h2, .module caption, .inline-group h2 {
+    background: var(--primary);
+    color: var(--text-light);
+  }
+  
+  div.breadcrumbs {
+    background: var(--primary-light);
+    color: var(--text-light);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  div.breadcrumbs a {
+    color: var(--accent-light);
+  }
+  
+  div.breadcrumbs a:hover {
+    color: var(--text-light);
+  }
+  
+  /* Links */
+  a:link, a:visited {
+    color: var(--primary-light);
+  }
+  
+  a:hover {
+    color: var(--accent);
+  }
+  
+  .object-tools a:link, .object-tools a:visited {
+    background: var(--primary-light);
+  }
+  
+  .object-tools a:hover {
+    background: var(--accent);
+  }
+  
+  .object-tools a.addlink {
+    background: var(--primary-light) url(../img/tooltag-add.svg) no-repeat 97% center;
+  }
+  
+  .object-tools a.addlink:hover {
+    background-color: var(--accent);
+  }
+  
+  /* Botões */
+  .button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary-light);
+    color: var(--text-light);
+  }
+  
+  .button:hover, input[type=submit]:hover, input[type=button]:hover,
+  .submit-row input:hover, a.button:hover {
+    background: var(--accent);
+  }
+  
+  .button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--accent);
+  }
+  
+  .button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+    background: var(--accent-dark);
+  }
+  
+  /* Campos de formulário */
+  .module h2, .module caption {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--primary);
+  }
+  
+  .module {
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* Tabelas de Lista */
+  #changelist table thead th {
+    background: var(--primary);
+    color: var(--text-light);
+  }
+  
+  #changelist table tbody tr.alt {
+    background: rgba(46, 61, 90, 0.05);
+  }
+  
+  #changelist table tbody tr:hover {
+    background: rgba(255, 153, 0, 0.1);
+  }
+  
+  .paginator a:link, .paginator a:visited {
+    background: var(--primary-light);
+    color: var(--text-light);
+  }
+  
+  .paginator a:hover {
+    background: var(--accent);
+  }
+  
+  /* Seletor de filtros */
+  #changelist-filter h2 {
+    background: var(--primary);
+    color: var(--text-light);
+  }
+  
+  #changelist-filter li.selected a {
+    color: var(--accent);
+  }
+  
+  #changelist-filter a:hover {
+    color: var(--accent);
+  }
+  
+  /* Mensagens */
+  .messagelist li {
+    font-size: 14px;
+    padding: 12px 15px;
+    margin: 0 0 10px 0;
+    border-radius: 4px;
+  }
+  
+  .messagelist li.success {
+    background: var(--success);
+    color: white;
+  }
+  
+  .messagelist li.error {
+    background: var(--danger);
+    color: white;
+  }
+  
+  .messagelist li.warning {
+    background: var(--warning);
+    color: #333;
+  }
+  
+  /* Calendário e relógios */
+  .calendarbox, .clockbox {
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .calendar caption, .calendarbox h2 {
+    background: var(--primary);
+    color: var(--text-light);
+  }
+  
+  .calendar td a:hover {
+    background: var(--accent);
+  }
+  
+  .calendar td.selected a {
+    background: var(--accent);
+  }
+  
+  /* Página de login */
+  .login {
+    background: var(--primary-dark);
+  }
+  
+  .login #container {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background: var(--primary-light);
+  }
+  
+  .login #header {
+    background: var(--primary);
+    border-radius: 6px 6px 0 0;
+  }
+  
+  .login #content {
+    background: var(--primary-light);
+  }
+  
+  .login .form-row label {
+    color: var(--text-light);
+  }
+  
+  .login .submit-row input {
+    background: var(--accent);
+  }
+  
+  .login .submit-row input:hover {
+    background: var(--accent-dark);
+  }
+  
+  /* Página de alteração de objetos */
+  .inline-related h3 {
+    background: var(--primary-light);
+    color: var(--text-light);
+  }
+  
+  fieldset.collapsed h2 {
+    background: var(--primary-light);
+  }
+  
+  /* Ajustes adicionais para melhorar a legibilidade */
+  .form-row {
+    padding: 12px 10px;
+  }
+  
+  .help, p.help, form p.help, div.help, form div.help, div.help li {
+    color: #666;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
+  /* Personalização específica para o admin do chatbot */
+  .field-response_text textarea,
+  .field-trigger_keywords textarea {
+    font-family: 'Consolas', 'Courier New', monospace;
+    min-height: 120px;
+  }
+  
+  .field-is_active, .field-is_default {
+    font-weight: bold;
+  }
+  
+  /* Dashboard personalizado */
+  .dashboard .module table th {
+    width: 100%;
+  }
+  
+  .dashboard .module table td {
+    white-space: nowrap;
+  }
+  
+  .dashboard .module table td a {
+    display: block;
+    padding: 4px 10px;
+  }
+  
+  .dashboard .module table td a:hover {
+    background-color: rgba(255, 153, 0, 0.1);
+  }
+  
+  /* Estatísticas e resumos */
+  .dashboard .module h2 {
+    background: var(--primary);
+  }
+  
+  /* Alerta para campos obrigatórios */
+  .required label, label.required {
+    font-weight: bold;
+    color: var(--text-light);
+  }
+  
+  /* Customizações para telas menores */
+  @media (max-width: 1024px) {
+    #changelist-filter {
+      width: 200px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    #changelist-filter {
+      width: 100%;
+      margin-left: 0;
+    }
+    
+    #changelist .actions {
+      padding: 5px 10px;
+    }
+  }

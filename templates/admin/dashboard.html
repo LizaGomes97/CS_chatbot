@@ -1,0 +1,451 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<style>
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-card {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .dashboard-card-header {
+    background-color: #1e2a47;
+    color: #fff;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .dashboard-card-body {
+    padding: 20px;
+  }
+  
+  .dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .stat-item {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff9900;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    color: #495057;
+    font-size: 0.9em;
+  }
+  
+  .recent-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .recent-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .recent-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+  }
+  
+  .usage-bar {
+    display: flex;
+    height: 25px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+  
+  .usage-bar-segment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  
+  .quick-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .action-button {
+    padding: 10px 15px;
+    background-color: #1e2a47;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+  }
+  
+  .action-button:hover {
+    background-color: #ff9900;
+    transform: translateY(-2px);
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th, .data-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .data-table th {
+    background-color: #f1f3f5;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .data-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .data-table tr:hover td {
+    background-color: #f8f9fa;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 500;
+  }
+  
+  .badge-primary {
+    background-color: #1e2a47;
+    color: #fff;
+  }
+  
+  .badge-accent {
+    background-color: #ff9900;
+    color: #1a1a2e;
+  }
+  
+  .badge-success {
+    background-color: #4CAF50;
+    color: #fff;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-card {
+      min-width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; Dashboard
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Dashboard do CS Chatbot</h1>
+
+<!-- Estatísticas Principais -->
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Estatísticas Gerais</div>
+    <div class="dashboard-card-body">
+      <div class="dashboard-stats">
+        <div class="stat-item">
+          <div class="stat-value">{{ total_sessions }}</div>
+          <div class="stat-label">Sessões Totais</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ active_sessions }}</div>
+          <div class="stat-label">Sessões Ativas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ total_messages }}</div>
+          <div class="stat-label">Mensagens</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ unique_users }}</div>
+          <div class="stat-label">Usuários Únicos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Atividade Recente (24h)</div>
+    <div class="dashboard-card-body">
+      <div class="dashboard-stats">
+        <div class="stat-item">
+          <div class="stat-value">{{ recent_sessions }}</div>
+          <div class="stat-label">Novas Sessões</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ recent_messages }}</div>
+          <div class="stat-label">Novas Mensagens</div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 20px;">
+        <h4 style="margin-bottom: 10px;">Distribuição de Mensagens</h4>
+        <div class="usage-bar">
+          <div class="usage-bar-segment" style="width: {{ message_types.user_messages_percentage }}%; background-color: #1e2a47;">
+            {{ message_types.user_messages_percentage }}%
+          </div>
+          <div class="usage-bar-segment" style="width: {{ message_types.bot_messages_percentage }}%; background-color: #ff9900;">
+            {{ message_types.bot_messages_percentage }}%
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #666;">
+          <div>
+            <span style="display: inline-block; width: 12px; height: 12px; background-color: #1e2a47; margin-right: 5px;"></span>
+            Usuário ({{ message_types.user_messages }})
+          </div>
+          <div>
+            <span style="display: inline-block; width: 12px; height: 12px; background-color: #ff9900; margin-right: 5px;"></span>
+            Bot ({{ message_types.bot_messages }})
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gráfico de Atividade -->
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Atividade por Hora (Últimas 24h)</div>
+    <div class="dashboard-card-body">
+      <div class="chart-container">
+        <canvas id="activityChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Respostas do Bot -->
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Respostas Mais Utilizadas</div>
+    <div class="dashboard-card-body">
+      {% if top_responses %}
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Resposta</th>
+              <th>Categoria</th>
+              <th>Uso</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for response in top_responses %}
+              <tr>
+                <td>{{ response.response__response_text|truncatechars:50 }}</td>
+                <td>
+                  <span class="badge badge-primary">{{ response.response__category__name }}</span>
+                </td>
+                <td>{{ response.usage_count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>Nenhuma resposta utilizada ainda.</p>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Categorias de Resposta</div>
+    <div class="dashboard-card-body">
+      {% if top_categories %}
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Respostas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for category in top_categories %}
+              <tr>
+                <td>{{ category.category__name }}</td>
+                <td>{{ category.response_count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>Nenhuma categoria definida ainda.</p>
+      {% endif %}
+      
+      <div class="quick-actions">
+        <a href="{% url 'admin:chatbot_responsecategory_changelist' %}" class="action-button">
+          Gerenciar Categorias
+        </a>
+        <a href="{% url 'admin:chatbot_botresponse_changelist' %}" class="action-button">
+          Gerenciar Respostas
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ações rápidas -->
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">Ações Rápidas</div>
+    <div class="dashboard-card-body">
+      <div class="quick-actions">
+        <a href="{% url 'admin:index' %}" class="action-button">
+          Painel Principal
+        </a>
+        <a href="{% url 'admin:chatbot_chatsession_changelist' %}" class="action-button">
+          Ver Sessões
+        </a>
+        <a href="{% url 'admin:chatbot_chatmessage_changelist' %}" class="action-button">
+          Ver Mensagens
+        </a>
+        <a href="{% url 'admin:chatbot_avatar_changelist' %}" class="action-button">
+          Gerenciar Avatares
+        </a>
+        <a href="{% url 'admin:chatbot_emotion_changelist' %}" class="action-button">
+          Gerenciar Emoções
+        </a>
+        <a href="{% url 'admin:chatbot_hudsetting_changelist' %}" class="action-button">
+          Configurações de HUD
+        </a>
+        <a href="{% url 'admin:chatbot_gamecommand_changelist' %}" class="action-button">
+          Comandos de Jogo
+        </a>
+        <a href="/" target="_blank" class="action-button" style="background-color: #ff9900;">
+          Visualizar Site
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para gráfico de atividade -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('activityChart').getContext('2d');
+    const hourlyData = [
+      {% for hour in hourly_activity %}
+        { hour: "{{ hour.hour }}", count: {{ hour.count }} },
+      {% endfor %}
+    ];
+    
+    const labels = hourlyData.map(item => item.hour);
+    const counts = hourlyData.map(item => item.count);
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Mensagens',
+          data: counts,
+          backgroundColor: 'rgba(255, 153, 0, 0.2)',
+          borderColor: 'rgba(255, 153, 0, 1)',
+          borderWidth: 2,
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: '#1e2a47',
+          pointBorderColor: '#ff9900',
+          pointBorderWidth: 2,
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Atividade de Chat nas Últimas 24 Horas',
+            font: {
+              size: 16
+            }
+          },
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            backgroundColor: 'rgba(30, 42, 71, 0.8)',
+            titleFont: {
+              size: 14
+            },
+            bodyFont: {
+              size: 14
+            },
+            callbacks: {
+              label: function(context) {
+                return 'Mensagens: ' + context.parsed.y;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

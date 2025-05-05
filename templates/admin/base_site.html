@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | CS Chatbot Admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'favicon.svg' %}" alt="CS Chatbot Logo" height="30" style="margin-right: 10px; vertical-align: middle;">
+        CS Chatbot Admin
+    </a>
+</h1>
+{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+    /* Estilos adicionais inline para garantir carregamento rápido */
+    :root {
+        --primary: #1e2a47;
+        --accent: #ff9900;
+    }
+    
+    /* Melhoria na apresentação de imagens em campos de imagem */
+    .field-image img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+    
+    /* Destaque para campos com prioridade */
+    .field-priority input {
+        font-weight: bold;
+        color: var(--accent);
+    }
+    
+    /* Melhor visualização para áreas de texto */
+    textarea {
+        font-family: "Roboto Mono", monospace;
+        line-height: 1.5;
+    }
+    
+    /* Adiciona pequeno ícone para links externos */
+    a[target="_blank"]::after {
+        content: "↗";
+        margin-left: 3px;
+        font-size: 0.8em;
+        vertical-align: super;
+    }
+</style>
+{% endblock %}
+
+{% block userlinks %}
+    <!-- Links personalizados para o admin -->
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a> /
+    <a href="{% url 'admin:chatbot_avatar_changelist' %}">Avatares</a> /
+    <a href="{% url 'admin:chatbot_botresponse_changelist' %}">Respostas</a> /
+    <a href="{% url 'admin:chatbot_hudsetting_changelist' %}">HUD</a> /
+    <a href="/" target="_blank">Ver Site</a> /
+    {% if user.is_active and user.is_staff %}
+        {% url 'django-admindocs-docroot' as docsroot %}
+        {% if docsroot %}
+            <a href="{{ docsroot }}">Documentação</a> /
+        {% endif %}
+    {% endif %}
+    {% if user.has_usable_password %}
+    <a href="{% url 'admin:password_change' %}">Alterar senha</a> /
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">Sair</a>
+{% endblock %}
+
+{% block welcome-msg %}
+    Olá, <strong>{% firstof user.get_short_name user.get_username %}</strong>. 
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

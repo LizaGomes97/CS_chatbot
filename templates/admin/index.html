@@ -1,0 +1,220 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .dashboard-overview {
+    background-color: #1e2a47;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #e6e6e6;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-overview h2 {
+    color: #ff9900;
+    margin-top: 0;
+    font-size: 1.4em;
+    border-bottom: 1px solid rgba(255, 153, 0, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-box {
+    flex: 1;
+    min-width: 150px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  
+  .stat-box:hover {
+    background-color: rgba(255, 153, 0, 0.15);
+  }
+  
+  .stat-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff9900;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    font-size: 0.9em;
+    color: #e6e6e6;
+  }
+  
+  .quick-links {
+    margin-top: 20px;
+  }
+  
+  .quick-link-button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #ff9900;
+    color: #1a1a2e;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s ease;
+  }
+  
+  .quick-link-button:hover {
+    background-color: #ffb64d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo para módulos do admin */
+  #content-main .module {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  #content-main .module h2 {
+    background-color: #1e2a47;
+    color: #fff;
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  /* Melhoria na responsividade */
+  @media (max-width: 767px) {
+    .stats-container {
+      flex-direction: column;
+    }
+    
+    .stat-box {
+      min-width: auto;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <!-- Dashboard overview -->
+  <div class="dashboard-overview">
+    <h2>Painel do Administrador CS Chatbot</h2>
+    
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-number">{{ app_list.0.models|length }}</div>
+        <div class="stat-label">Modelos de Dados</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">{% if sessions_count %}{{ sessions_count }}{% else %}0{% endif %}</div>
+        <div class="stat-label">Sessões de Chat</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">{% if responses_count %}{{ responses_count }}{% else %}0{% endif %}</div>
+        <div class="stat-label">Respostas Configuradas</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">{% if users_count %}{{ users_count }}{% else %}0{% endif %}</div>
+        <div class="stat-label">Usuários Ativos</div>
+      </div>
+    </div>
+    
+    <div class="quick-links">
+      <h3 style="color: #e6e6e6; margin-bottom: 10px;">Acesso Rápido</h3>
+      <a href="{% url 'admin:chatbot_avatar_changelist' %}" class="quick-link-button">Gerenciar Avatares</a>
+      <a href="{% url 'admin:chatbot_botresponse_changelist' %}" class="quick-link-button">Respostas do Bot</a>
+      <a href="{% url 'admin:chatbot_emotion_changelist' %}" class="quick-link-button">Emoções</a>
+      <a href="{% url 'admin:chatbot_hudsetting_changelist' %}" class="quick-link-button">Configurar HUD</a>
+      <a href="{% url 'admin:chatbot_chatsession_changelist' %}" class="quick-link-button">Sessões de Chat</a>
+      <a href="/" target="_blank" class="quick-link-button" style="background-color: #2e3d5a;">Ver Site</a>
+    </div>
+  </div>
+
+  {% if app_list %}
+    {% for app in app_list %}
+      <div class="app-{{ app.app_label }} module{% if app.app_url in request.path|urlencode %} current-app{% endif %}">
+        <table>
+          <caption>
+            <a href="{{ app.app_url }}" class="section" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
+          </caption>
+          {% for model in app.models %}
+            <tr class="model-{{ model.object_name|lower }}{% if model.admin_url in request.path|urlencode %} current-model{% endif %}">
+              {% if model.admin_url %}
+                <th scope="row"><a href="{{ model.admin_url }}"{% if model.admin_url in request.path|urlencode %} aria-current="page"{% endif %}>{{ model.name }}</a></th>
+              {% else %}
+                <th scope="row">{{ model.name }}</th>
+              {% endif %}
+
+              {% if model.add_url %}
+                <td><a href="{{ model.add_url }}" class="addlink">{% translate 'Add' %}</a></td>
+              {% else %}
+                <td></td>
+              {% endif %}
+
+              {% if model.admin_url and show_changelinks %}
+                {% if model.view_only %}
+                  <td><a href="{{ model.admin_url }}" class="viewlink">{% translate 'View' %}</a></td>
+                {% else %}
+                  <td><a href="{{ model.admin_url }}" class="changelink">{% translate 'Change' %}</a></td>
+                {% endif %}
+              {% else %}
+                <td></td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endfor %}
+  {% else %}
+  <p>{% translate "You don't have permission to view or edit anything." %}</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+        {% else %}
+            <ul class="actionlist">
+                {% for entry in admin_log %}
+                <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                    {% if entry.is_deletion or not entry.get_admin_url %}
+                        {{ entry.object_repr }}
+                    {% else %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% endif %}
+                    <br>
+                    {% if entry.content_type %}
+                        <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    {% else %}
+                        <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
