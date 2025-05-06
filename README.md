@@ -2,8 +2,6 @@
 
 Um chatbot temático de Counter-Strike desenvolvido com Django, Three.js e tecnologias web modernas. Este projeto permite a criação de um assistente virtual interativo com elementos visuais de HUD do Counter-Strike.
 
-![Screenshot do CS Chatbot](static/images/screenshot.png)
-
 ## Características
 
 - **Avatar 3D Interativo**: Personagem 3D animado que reage às interações do usuário
@@ -37,10 +35,6 @@ Um chatbot temático de Counter-Strike desenvolvido com Django, Three.js e tecno
 7. Inicie o servidor: `python manage.py runserver`
 8. Acesse: `http://localhost:8000/`
 
-## Configuração e Deploy
-
-Para instruções detalhadas de instalação, configuração e uso, consulte o [Guia de Instalação e Uso](INSTALLATION.md).
-
 ## Personalização
 
 O sistema é altamente personalizável através do painel de administração Django:
@@ -51,22 +45,6 @@ O sistema é altamente personalizável através do painel de administração Dja
 - **HUD**: Ajuste as configurações visuais do HUD
 - **Comandos**: Adicione novos comandos de interação
 
-## Telas
-
-### Interface Principal
-![Interface Principal](static/images/interface.png)
-
-### Painel Administrativo
-![Painel Admin](static/images/admin.png)
-
-## Contribuindo
-
-Contribuições são bem-vindas! Veja [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre como contribuir.
-
-## Licença
-
-Este projeto está licenciado sob a MIT License - veja [LICENSE](LICENSE) para detalhes.
-
 ## Reconhecimentos
 
 - Three.js pela excelente biblioteca 3D
@@ -76,4 +54,4 @@ Este projeto está licenciado sob a MIT License - veja [LICENSE](LICENSE) para d
 
 ## Contato
 
-Para perguntas e sugestões, abra uma issue no GitHub ou entre em contato com [seu-email@exemplo.com].
+Para perguntas e sugestões, abra uma issue no GitHub ou entre em contato com lizandraplacido@gmail.com.
